@@ -13,6 +13,7 @@ namespace FloodIt.Logic.Gameplay
         
         private Tuple<int, int> floodStart;
         private int steps;
+        private int tilesAquired;
 
         public CasualGameplay(Game game) : base("Casual", game) {
             
@@ -22,7 +23,7 @@ namespace FloodIt.Logic.Gameplay
             Tile origin = game.GameGrid[0, 0];
             origin.Owner = TileOwner.Player;
 
-            game.GameGrid.FloodFill(floodStart, origin.TileColor, TileOwner.Player);
+            tilesAquired = 1 + game.GameGrid.FloodFill(floodStart, origin.TileColor, TileOwner.Player);
             game.Painter.Repaint();
 
             UpdateScoreboard();
@@ -37,7 +38,7 @@ namespace FloodIt.Logic.Gameplay
                 return;
             }
 
-            game.GameGrid.FloodFill(floodStart, color, TileOwner.Player);
+            tilesAquired += game.GameGrid.FloodFill(floodStart, color, TileOwner.Player);
             game.Painter.Repaint();
 
             ++steps;
@@ -53,20 +54,7 @@ namespace FloodIt.Logic.Gameplay
 
         public override bool HasEnded()
         {
-            
-            for (var i = 0; i < game.GameGrid.GridSize; i++)
-            {
-                for (var j = 0; j < game.GameGrid.GridSize; j++)
-                {
-                    if (game.GameGrid[i, j].TileColor != game.GameGrid[0, 0].TileColor)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-
+            return tilesAquired == Math.Pow(game.GameGrid.GridSize, 2);
         }
 
         public override void UpdateScoreboard()

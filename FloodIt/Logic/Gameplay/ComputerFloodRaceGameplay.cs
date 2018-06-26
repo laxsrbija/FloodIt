@@ -22,18 +22,15 @@ namespace FloodIt.Logic.Gameplay
             playerStart = new Tuple<int, int>(0, 0);
             cpuStart = new Tuple<int, int>(13, 13);
 
-            playerTiles = 1;
-            cpuTiles = 1;
-
             Tile playerOrigin = game.GameGrid[0, 0];
             playerOrigin.Owner = TileOwner.Player;
 
-            playerTiles += game.GameGrid.FloodFill(playerStart, playerOrigin.TileColor, TileOwner.Player);
+            playerTiles = 1 + game.GameGrid.FloodFill(playerStart, playerOrigin.TileColor, TileOwner.Player);
 
             Tile cpuOrigin = game.GameGrid[13, 13];
             cpuOrigin.Owner = TileOwner.Computer; // TODO Dodati player 1 i 2
 
-            cpuTiles += game.GameGrid.FloodFill(cpuStart, cpuOrigin.TileColor, TileOwner.Computer);
+            cpuTiles = 1 + game.GameGrid.FloodFill(cpuStart, cpuOrigin.TileColor, TileOwner.Computer);
 
             UpdateScoreboard();
             game.Painter.Repaint();
