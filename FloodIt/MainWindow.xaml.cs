@@ -24,7 +24,7 @@ namespace FloodIt
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
         private Page window;
         public Page Window {
             get => window;

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using FloodIt.Logic;
+using FloodIt.Logic.Gameplay;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static FloodIt.Logic.Gameplay.IGameplay;
 
 namespace FloodIt.View
 {
@@ -20,9 +24,45 @@ namespace FloodIt.View
     /// </summary>
     public partial class GameScreen : Page
     {
-        public GameScreen()
+
+        private MainWindow mainWindow;
+
+        public Game GameInstance { get; private set; }
+
+        public GameScreen(MainWindow mainWindow, int id/* TODO !! */)
         {
+
             InitializeComponent();
+
+            DataContext = this;
+
+            this.mainWindow = mainWindow;
+
+            if (id == 1) // TODO!
+                GameInstance = new Game(this, GameType.Singleplayer);
+            else
+                GameInstance = new Game(this, GameType.FloodRace);
         }
+
+        private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            GameInstance.HandleClick(e.GetPosition(GameCanvas));
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindow.Window = new MainMenu(mainWindow);
+        }
+
+        public bool DisplayMessage(string message, MessageType type)
+        {
+            // TODO odgovor prozora yes ili no
+            MessageBox.Show(type + ": " + message);
+            return true;
+        }
+
+        public enum MessageType { ERROR, SUCCESS, INFO }
+
     }
+
 }

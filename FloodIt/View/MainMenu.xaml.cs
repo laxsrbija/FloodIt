@@ -31,7 +31,12 @@ namespace FloodIt.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            mainWindow.Window = new GameScreen();
+            mainWindow.Window = new GameScreen(mainWindow, 1);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            mainWindow.Window = new GameScreen(mainWindow, 2);
         }
     }
 }
