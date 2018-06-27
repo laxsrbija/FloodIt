@@ -40,7 +40,7 @@ namespace FloodIt.Logic.Gameplay
 
         }
 
-        public override void FloodToColor(Color color)
+        public override void OnColorSelect(Color color)
         {
 
             if (!running || game.GameGrid[0, 0].TileColor == color || game.GameGrid[13, 13].TileColor == color) // TODO izbaciti upozorenje

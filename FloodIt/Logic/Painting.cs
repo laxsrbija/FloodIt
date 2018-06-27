@@ -7,21 +7,23 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using static FloodIt.Logic.Grid;
 
 namespace FloodIt.Logic
 {
     public class Painting
     {
 
-        private int tileSize = 35;
-
         private Grid grid;
         private Canvas canvas;
+        private int tileSize;
 
-        public Painting(Game game)
+        public Painting(Game game, GridType gridType)
         {
             this.grid = game.GameGrid;
             this.canvas = game.Screen.GameCanvas;
+
+            this.tileSize = DetermineTileSize(gridType);
         }
 
         public void Repaint()
@@ -54,6 +56,20 @@ namespace FloodIt.Logic
             int x = (int) (point.X / tileSize);
             int y = (int) (point.Y / tileSize);
             return new Tuple<int, int>(x, y);
+        }
+
+        private int DetermineTileSize(GridType gridType)
+        {
+            switch (gridType)
+            {
+                case GridType.SMALL:
+                    return 36;
+                case GridType.MEDIUM:
+                    return 24;
+                case GridType.LARGE:
+                    return 18;
+            }
+            return -1;
         }
 
     }

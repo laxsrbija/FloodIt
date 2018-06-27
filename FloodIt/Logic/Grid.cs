@@ -14,11 +14,11 @@ namespace FloodIt.Logic
 
         private List<List<Tile>> grid;
 
-        public Grid(int gridSize)
+        public Grid(GridType gridType)
         {
             Random random = new Random(Guid.NewGuid().GetHashCode());
 
-            GridSize = gridSize;
+            DetermineGridSize(gridType);
 
             grid = new List<List<Tile>>();
             for (var i = 0; i < GridSize; i++)
@@ -50,8 +50,6 @@ namespace FloodIt.Logic
         public int FloodFill(Tuple<int, int> startingPoint, Color newColor, TileOwner owner)
         {
 
-            Console.WriteLine("############################");
-
             Stack<Tile> tiles = new Stack<Tile>();
             HashSet<int> visitedTiles = new HashSet<int>();
             int tilesAcquired = 0;
@@ -66,13 +64,8 @@ namespace FloodIt.Logic
                 Tile tile = tiles.Pop();
                 visitedTiles.Add(tile.Id);
 
-                Console.WriteLine("----");
-                Console.WriteLine("Ispitujem plocicu: {0}", tile.Id);
-
                 if (tile.Owner == owner || (tile.Owner == TileOwner.None && tile.TileColor == newColor))
                 {
-
-                    Console.WriteLine("Plocica OK: {0}", tile.Id);
 
                     if (tile.Owner == TileOwner.None)
                     {
@@ -90,14 +83,9 @@ namespace FloodIt.Logic
                     TestAndPush(tiles, i, j + 1, visitedTiles);
                     TestAndPush(tiles, i, j - 1, visitedTiles);
 
-                } else
-                {
-                    Console.WriteLine("Plocica PALA: {0}", tile.Id);
                 }
 
             }
-
-            Console.WriteLine("Tiles Acquired: {0}", tilesAcquired);
 
             return tilesAcquired;
 
@@ -108,14 +96,25 @@ namespace FloodIt.Logic
             Tile tile = this[i, j];
             if (tile != null && !visited.Contains(tile.Id))
             {
-                Console.WriteLine("Plocica dodata u red: {0}", tile.Id);
                 queue.Push(tile);
-            } else
+            }
+        }
+
+        public enum GridType { SMALL, MEDIUM, LARGE }
+
+        private void DetermineGridSize(GridType gridType)
+        {
+            switch (gridType)
             {
-                if (tile != null)
-                {
-                    Console.WriteLine("Plocica NIJE dodata u red: {0}", tile.Id);
-                }
+                case GridType.SMALL:
+                    GridSize = 12;
+                    break;
+                case GridType.MEDIUM:
+                    GridSize = 18;
+                    break;
+                case GridType.LARGE:
+                    GridSize = 24;
+                    break;
             }
         }
 

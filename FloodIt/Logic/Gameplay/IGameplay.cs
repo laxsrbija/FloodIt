@@ -41,7 +41,7 @@ namespace FloodIt.Logic.Gameplay
             }
         }
 
-        abstract public void FloodToColor(Color color);
+        abstract public void OnColorSelect(Color color);
 
         abstract public void UpdateScoreboard();
 

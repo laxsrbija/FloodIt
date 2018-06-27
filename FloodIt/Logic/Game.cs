@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using static FloodIt.Logic.Gameplay.IGameplay;
+using static FloodIt.Logic.Grid;
 
 namespace FloodIt.Logic
 {
@@ -15,20 +16,18 @@ namespace FloodIt.Logic
     public class Game
     {
 
-        private int gridSize = 14;
-
         public IGameplay Gameplay { get; private set; }
         public Grid GameGrid { get; private set; }
         public Painting Painter { get; private set; }
         public GameScreen Screen { get; private set; }
 
-        public Game(GameScreen gameScreen, GameType gameType)
+        public Game(GameScreen gameScreen, GameType gameType, GridType gridType)
         {
 
             Screen = gameScreen;
 
-            GameGrid = new Grid(gridSize);
-            Painter = new Painting(this);
+            GameGrid = new Grid(gridType);
+            Painter = new Painting(this, gridType);
 
             switch (gameType) // TODO
             {
@@ -54,19 +53,8 @@ namespace FloodIt.Logic
             var tuple = Painter.IdentifyTile(point);
             Tile tile = GameGrid[tuple.Item1, tuple.Item2];
 
-            Gameplay.FloodToColor(tile.TileColor);
+            Gameplay.OnColorSelect(tile.TileColor);
 
-        }
-
-        public void PrintGrid()
-        {
-            for (var i = 0; i < gridSize; i++)
-            {
-                for (var j = 0; j < gridSize; j++)
-                {
-                    Console.WriteLine(GameGrid[i, j]);
-                }
-            }
         }
 
     }

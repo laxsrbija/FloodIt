@@ -23,7 +23,7 @@ namespace FloodIt.Logic.Gameplay
             floodStart = new Tuple<int, int>(0, 0);
             steps = 0;
 
-            maxSteps = (int)Math.Floor((double)(25 * ((game.GameGrid.GridSize * 2) * 6) / ((14 + 14) * 6)));
+            maxSteps = (int)Math.Floor((double)(25 * ((game.GameGrid.GridSize * 2) * 6) / ((14 + 14) * 6))); // TODO Ceil?
 
             Tile origin = game.GameGrid[0, 0];
             origin.Owner = TileOwner.Player1;
@@ -35,7 +35,7 @@ namespace FloodIt.Logic.Gameplay
 
         }
 
-        public override void FloodToColor(Color color)
+        public override void OnColorSelect(Color color)
         {
 
             if (!running || game.GameGrid[0, 0].TileColor == color)

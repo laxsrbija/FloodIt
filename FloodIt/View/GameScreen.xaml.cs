@@ -39,13 +39,13 @@ namespace FloodIt.View
             this.mainWindow = mainWindow;
 
             if (id == 1) // TODO!
-                GameInstance = new Game(this, GameType.Singleplayer);
+                GameInstance = new Game(this, GameType.Singleplayer, Logic.Grid.GridType.LARGE);
             else if (id == 2)
-                GameInstance = new Game(this, GameType.FloodRace);
+                GameInstance = new Game(this, GameType.FloodRace, Logic.Grid.GridType.MEDIUM);
             else if (id == 3)
-                GameInstance = new Game(this, GameType.FloodRaceCPU);
+                GameInstance = new Game(this, GameType.FloodRaceCPU, Logic.Grid.GridType.SMALL);
             else if (id == 4)
-                GameInstance = new Game(this, GameType.FloodRace2P);
+                GameInstance = new Game(this, GameType.FloodRace2P, Logic.Grid.GridType.SMALL);
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)

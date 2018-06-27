@@ -16,18 +16,22 @@ namespace FloodIt.Logic.Gameplay
         private int playerTiles;
         private int cpuTiles;
 
+        private int gridSize;
+
         public ComputerFloodRace(Game game) : base("Computer Flood Race", game)
         {
 
+            gridSize = game.GameGrid.GridSize;
+
             playerStart = new Tuple<int, int>(0, 0);
-            cpuStart = new Tuple<int, int>(13, 13);
+            cpuStart = new Tuple<int, int>(gridSize - 1, gridSize - 1);
 
             Tile playerOrigin = game.GameGrid[0, 0];
             playerOrigin.Owner = TileOwner.Player1;
 
             playerTiles = 1 + game.GameGrid.FloodFill(playerStart, playerOrigin.TileColor, TileOwner.Player1);
 
-            Tile cpuOrigin = game.GameGrid[13, 13];
+            Tile cpuOrigin = game.GameGrid[gridSize - 1, gridSize - 1];
             cpuOrigin.Owner = TileOwner.Computer;
 
             cpuTiles = 1 + game.GameGrid.FloodFill(cpuStart, cpuOrigin.TileColor, TileOwner.Computer);
@@ -37,7 +41,7 @@ namespace FloodIt.Logic.Gameplay
 
         }
 
-        public override void FloodToColor(Color color)
+        public override void OnColorSelect(Color color)
         {
 
             if (!running || game.GameGrid[0, 0].TileColor == color)
@@ -45,7 +49,7 @@ namespace FloodIt.Logic.Gameplay
                 return;
             }
 
-            if (color == game.GameGrid[13, 13].TileColor)
+            if (color == game.GameGrid[gridSize - 1, gridSize - 1].TileColor)
             {
                 game.Screen.DisplayMessage("Cannot select the same color as Computer!", View.GameScreen.MessageType.INFO);
                 return;
