@@ -47,7 +47,7 @@ namespace FloodIt.Logic.Gameplay
 
         abstract public bool HasEnded();
 
-        public enum GameType { Singleplayer, FloodRace} // TODO eliminisati ovaj deo
+        public enum GameType { Singleplayer, FloodRace, FloodRaceCPU, FloodRace2P} // TODO eliminisati ovaj deo
 
     }
 }

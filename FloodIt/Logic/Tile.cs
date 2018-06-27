@@ -40,6 +40,6 @@ namespace FloodIt.Logic
 
     }
 
-    public enum TileOwner { None, Player, Computer }
+    public enum TileOwner { None, Player1, Player2, Computer }
 
 }

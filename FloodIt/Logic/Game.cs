@@ -17,7 +17,7 @@ namespace FloodIt.Logic
 
         private int gridSize = 14;
 
-        public IGameplay Strategy { get; private set; }
+        public IGameplay Gameplay { get; private set; }
         public Grid GameGrid { get; private set; }
         public Painting Painter { get; private set; }
         public GameScreen Screen { get; private set; }
@@ -30,13 +30,19 @@ namespace FloodIt.Logic
             GameGrid = new Grid(gridSize);
             Painter = new Painting(this);
 
-            switch (gameType)
+            switch (gameType) // TODO
             {
                 case GameType.Singleplayer:
-                    Strategy = new CasualGameplay(this);
+                    Gameplay = new Casual(this);
+                    break;
+                case GameType.FloodRaceCPU:
+                    Gameplay = new ComputerFloodRace(this);
                     break;
                 case GameType.FloodRace:
-                    Strategy = new ComputerFloodRaceGameplay(this);
+                    Gameplay = new Classic(this);
+                    break;
+                case GameType.FloodRace2P:
+                    Gameplay = new TwoPlayerFloodRace(this);
                     break;
             }
 
@@ -48,7 +54,7 @@ namespace FloodIt.Logic
             var tuple = Painter.IdentifyTile(point);
             Tile tile = GameGrid[tuple.Item1, tuple.Item2];
 
-            Strategy.FloodToColor(tile.TileColor);
+            Gameplay.FloodToColor(tile.TileColor);
 
         }
 

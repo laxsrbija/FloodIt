@@ -54,7 +54,7 @@ namespace FloodIt.Logic
 
             Stack<Tile> tiles = new Stack<Tile>();
             HashSet<int> visitedTiles = new HashSet<int>();
-            int tilesAquired = 0;
+            int tilesAcquired = 0;
 
             Tile startingTile = this[startingPoint.Item1, startingPoint.Item2];
 
@@ -76,7 +76,7 @@ namespace FloodIt.Logic
 
                     if (tile.Owner == TileOwner.None)
                     {
-                        ++tilesAquired;
+                        ++tilesAcquired;
                     }
 
                     tile.Owner = owner;
@@ -97,9 +97,9 @@ namespace FloodIt.Logic
 
             }
 
-            Console.WriteLine("Tiles aquired: {0}", tilesAquired);
+            Console.WriteLine("Tiles Acquired: {0}", tilesAcquired);
 
-            return tilesAquired;
+            return tilesAcquired;
 
         }
 

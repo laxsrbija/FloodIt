@@ -40,8 +40,12 @@ namespace FloodIt.View
 
             if (id == 1) // TODO!
                 GameInstance = new Game(this, GameType.Singleplayer);
-            else
+            else if (id == 2)
                 GameInstance = new Game(this, GameType.FloodRace);
+            else if (id == 3)
+                GameInstance = new Game(this, GameType.FloodRaceCPU);
+            else if (id == 4)
+                GameInstance = new Game(this, GameType.FloodRace2P);
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)

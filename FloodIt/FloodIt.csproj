@@ -54,11 +54,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Logic\Game.cs" />
-    <Compile Include="Logic\Gameplay\ComputerFloodRaceGameplay.cs" />
+    <Compile Include="Logic\Gameplay\ComputerFloodRace.cs" />
+    <Compile Include="Logic\Gameplay\Classic.cs" />
+    <Compile Include="Logic\Gameplay\TwoPlayerFloodRace.cs" />
     <Compile Include="Logic\Grid.cs" />
     <Compile Include="Logic\Painting.cs" />
     <Compile Include="Logic\Gameplay\IGameplay.cs" />
-    <Compile Include="Logic\Gameplay\CasualGameplay.cs" />
+    <Compile Include="Logic\Gameplay\Casual.cs" />
     <Compile Include="Logic\Tile.cs" />
     <Compile Include="View\GameScreen.xaml.cs">
       <DependentUpon>GameScreen.xaml</DependentUpon>

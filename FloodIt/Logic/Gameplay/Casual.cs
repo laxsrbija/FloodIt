@@ -8,22 +8,22 @@ using System.Windows.Media;
 
 namespace FloodIt.Logic.Gameplay
 {
-    public class CasualGameplay : IGameplay
+    public class Casual : IGameplay
     {
         
         private Tuple<int, int> floodStart;
         private int steps;
-        private int tilesAquired;
+        private int tilesAcquired;
 
-        public CasualGameplay(Game game) : base("Casual", game) {
+        public Casual(Game game) : base("Casual", game) {
             
             floodStart = new Tuple<int, int>(0, 0);
             steps = 0;
 
             Tile origin = game.GameGrid[0, 0];
-            origin.Owner = TileOwner.Player;
+            origin.Owner = TileOwner.Player1;
 
-            tilesAquired = 1 + game.GameGrid.FloodFill(floodStart, origin.TileColor, TileOwner.Player);
+            tilesAcquired = 1 + game.GameGrid.FloodFill(floodStart, origin.TileColor, TileOwner.Player1);
             game.Painter.Repaint();
 
             UpdateScoreboard();
@@ -38,7 +38,7 @@ namespace FloodIt.Logic.Gameplay
                 return;
             }
 
-            tilesAquired += game.GameGrid.FloodFill(floodStart, color, TileOwner.Player);
+            tilesAcquired += game.GameGrid.FloodFill(floodStart, color, TileOwner.Player1);
             game.Painter.Repaint();
 
             ++steps;
@@ -54,7 +54,7 @@ namespace FloodIt.Logic.Gameplay
 
         public override bool HasEnded()
         {
-            return tilesAquired == Math.Pow(game.GameGrid.GridSize, 2);
+            return tilesAcquired == Math.Pow(game.GameGrid.GridSize, 2);
         }
 
         public override void UpdateScoreboard()

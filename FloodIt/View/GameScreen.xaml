@@ -11,8 +11,8 @@
     <Grid>
         <Button Content="Button" HorizontalAlignment="Left" Margin="49,26,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         <Canvas Name="GameCanvas" HorizontalAlignment="Left" Height="324" Margin="62,72,0,0" VerticalAlignment="Top" Width="340" MouseDown="Canvas_MouseDown" Background="AntiqueWhite"/>
-        <TextBlock HorizontalAlignment="Left" Height="33" Margin="144,26,0,0" TextWrapping="Wrap" Text="{Binding GameInstance.Strategy.Gametype}" VerticalAlignment="Top" Width="203" TextAlignment="Center"/>
-        <TextBlock HorizontalAlignment="Left" Height="33" Margin="384,26,0,0" TextWrapping="Wrap" Text="{Binding GameInstance.Strategy.Scoreboard}" VerticalAlignment="Top" Width="258" TextAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Left" Height="33" Margin="144,26,0,0" TextWrapping="Wrap" Text="{Binding GameInstance.Gameplay.Gametype}" VerticalAlignment="Top" Width="203" TextAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Left" Height="33" Margin="384,26,0,0" TextWrapping="Wrap" Text="{Binding GameInstance.Gameplay.Scoreboard}" VerticalAlignment="Top" Width="258" TextAlignment="Center"/>
 
     </Grid>
 </Page>

@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace FloodIt.Logic.Gameplay
 {
-    public class ComputerFloodRaceGameplay : IGameplay
+    public class ComputerFloodRace : IGameplay // TODO https://i.imgur.com/bmbCzJG.png
     {
 
         private Tuple<int, int> playerStart;
@@ -16,19 +16,19 @@ namespace FloodIt.Logic.Gameplay
         private int playerTiles;
         private int cpuTiles;
 
-        public ComputerFloodRaceGameplay(Game game) : base("Computer Flood Race", game)
+        public ComputerFloodRace(Game game) : base("Computer Flood Race", game)
         {
 
             playerStart = new Tuple<int, int>(0, 0);
             cpuStart = new Tuple<int, int>(13, 13);
 
             Tile playerOrigin = game.GameGrid[0, 0];
-            playerOrigin.Owner = TileOwner.Player;
+            playerOrigin.Owner = TileOwner.Player1;
 
-            playerTiles = 1 + game.GameGrid.FloodFill(playerStart, playerOrigin.TileColor, TileOwner.Player);
+            playerTiles = 1 + game.GameGrid.FloodFill(playerStart, playerOrigin.TileColor, TileOwner.Player1);
 
             Tile cpuOrigin = game.GameGrid[13, 13];
-            cpuOrigin.Owner = TileOwner.Computer; // TODO Dodati player 1 i 2
+            cpuOrigin.Owner = TileOwner.Computer;
 
             cpuTiles = 1 + game.GameGrid.FloodFill(cpuStart, cpuOrigin.TileColor, TileOwner.Computer);
 
@@ -51,7 +51,7 @@ namespace FloodIt.Logic.Gameplay
                 return;
             }
 
-            playerTiles += game.GameGrid.FloodFill(playerStart, color, TileOwner.Player);
+            playerTiles += game.GameGrid.FloodFill(playerStart, color, TileOwner.Player1);
 
 
             var tiles = AquisitionsByColor();
