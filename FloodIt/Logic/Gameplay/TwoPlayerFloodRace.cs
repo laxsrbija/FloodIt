@@ -21,10 +21,14 @@ namespace FloodIt.Logic.Gameplay
 
         private int gridSize;
 
-        public TwoPlayerFloodRace(Game game) : base("Two Player Flood Race", game)
+        public TwoPlayerFloodRace() : base("Two Player Flood Race") { }
+
+        public override void OnGameInit(Game game)
         {
 
-            gridSize = game.GameGrid.GridSize;
+            SetGameInstance(game);
+
+            gridSize = game.GameGrid.GridDimension;
 
             p1Start = new Tuple<int, int>(0, 0);
             p2Start = new Tuple<int, int>(gridSize - 1, gridSize - 1);
@@ -40,55 +44,68 @@ namespace FloodIt.Logic.Gameplay
             p2Tiles = 1 + game.GameGrid.FloodFill(p2Start, p2Origin.TileColor, TileOwner.Player2);
 
             game.Painter.Repaint();
-            UpdateScoreboard();
+            OnScoreboardChanged();
 
         }
 
         public override void OnColorSelect(Color color)
         {
 
-            if (!running || game.GameGrid[0, 0].TileColor == color || game.GameGrid[gridSize - 1, gridSize - 1].TileColor == color) // TODO izbaciti upozorenje
-            {
-                return;
-            }
-
             if (turn > 0)
             {
-                p1Tiles += game.GameGrid.FloodFill(p1Start, color, TileOwner.Player1);
+                if (game.GameGrid[gridSize - 1, gridSize - 1].TileColor == color)
+                {
+                    game.Screen.DisplayMessage("Can't select the same color as the other player", View.GameScreen.MessageType.HINT);
+                } else {
+                    p1Tiles += game.GameGrid.FloodFill(p1Start, color, TileOwner.Player1);
+                }
             } else
             {
-                p2Tiles += game.GameGrid.FloodFill(p2Start, color, TileOwner.Player2);
+                if (game.GameGrid[0, 0].TileColor == color)
+                {
+                    game.Screen.DisplayMessage("Can't select the same color as the other player", View.GameScreen.MessageType.HINT);
+                } else
+                {
+                    p2Tiles += game.GameGrid.FloodFill(p2Start, color, TileOwner.Player2);
+                }
             }
 
             turn = -turn;
 
             game.Painter.Repaint();
-            UpdateScoreboard();
+            OnScoreboardChanged();
 
             if (HasEnded())
             {
-                if (p1Tiles > p2Tiles)
-                {
-                    game.Screen.DisplayMessage("Player 1 has won!", View.GameScreen.MessageType.SUCCESS);
-                } else if (p2Tiles > p1Tiles)
-                {
-                    game.Screen.DisplayMessage("Player 2 has won!", View.GameScreen.MessageType.SUCCESS);
-                } else
-                {
-                    game.Screen.DisplayMessage("The game is a tie!", View.GameScreen.MessageType.SUCCESS);
-                }
+                OnGameEnded();
+            }
 
-                running = false;
+        }
+
+        public override void OnGameEnded()
+        {
+
+            if (p1Tiles > p2Tiles)
+            {
+                game.Screen.DisplayMessage("Player 1 has won!", View.GameScreen.MessageType.SUCCESS, true);
+            }
+            else if (p2Tiles > p1Tiles)
+            {
+                game.Screen.DisplayMessage("Player 2 has won!", View.GameScreen.MessageType.SUCCESS, true);
+            }
+            else
+            {
+                game.Screen.DisplayMessage("The game is a tie!", View.GameScreen.MessageType.INFO, true);
             }
 
         }
 
         public override bool HasEnded()
         {
-            return p1Tiles + p2Tiles == Math.Pow(game.GameGrid.GridSize, 2);
+            return p1Tiles + p2Tiles == Math.Pow(game.GameGrid.GridDimension, 2);
         }
 
-        public override void UpdateScoreboard()
+        public override void OnScoreboardChanged()
         {
             if (turn > 0)
             {

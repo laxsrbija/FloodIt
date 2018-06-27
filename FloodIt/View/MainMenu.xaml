@@ -10,18 +10,18 @@
 
     <Grid Style="{StaticResource FloodItGridBackground}">
         <StackPanel>
-            <Image HorizontalAlignment="Center" Margin="0, 100, 0, 60" Height="55" VerticalAlignment="Top" Width="320" Source="/FloodIt;component/Resources/logo.png"/>
-            <Button Style="{StaticResource FloodItMainButton}" Content="Casual" Click="Button_Click"/>
-            <Button Style="{StaticResource FloodItMainButton}" Content="Classic" Click="Button_Click_1"/>
-            <Button Style="{StaticResource FloodItMainButton}" Content="Computer Flood Race" Click="Button_Click_2"/>
-            <Button Style="{StaticResource FloodItMainButton}" Content="Two Player Flood Race" Click="Button_Click_3"/>
+            <Image HorizontalAlignment="Center" Margin="0, 90, 0, 60" Height="55" VerticalAlignment="Top" Width="320" Source="/FloodIt;component/Resources/logo.png"/>
+            <Button Style="{StaticResource FloodItMainButton}" Content="Casual" Click="Casual_Click"/>
+            <Button Style="{StaticResource FloodItMainButton}" Content="Classic" Click="Classic_Click"/>
+            <Button Style="{StaticResource FloodItMainButton}" Content="Computer Flood Race" Click="CpuFloodRace_Click"/>
+            <Button Style="{StaticResource FloodItMainButton}" Content="Two Player Flood Race" Click="TwoPlayerFloodRace_Click"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 25, 0, 20">
                 <Label Style="{StaticResource FloodItSizeLabel}" Content="Game size:"/>
-                <Label Style="{StaticResource FloodItSizeLabel}" Content="Small" Foreground="#E63946" Cursor="Hand"/>
-                <Label Style="{StaticResource FloodItSizeLabel}" Content="Medium" Foreground="#E63946" Cursor="Hand"/>
-                <Label Style="{StaticResource FloodItSizeLabel}" Content="Large" Cursor="Hand"/>
+                <Label Name="SizeSmall" Style="{StaticResource FloodItSizeLabel}" Content="Small" Cursor="Hand" MouseDown="SizeLabel_MouseDown"/>
+                <Label Name="SizeMedium" Style="{StaticResource FloodItSizeLabel}" Content="Medium" Cursor="Hand" MouseDown="SizeLabel_MouseDown"/>
+                <Label Name="SizeLarge" Style="{StaticResource FloodItSizeLabel}" Content="Large" Cursor="Hand" MouseDown="SizeLabel_MouseDown"/>
             </StackPanel>
-            <Label Style="{StaticResource FloodItSizeLabel}" Content="Created by Lazar Stanojević" Cursor="Hand" HorizontalAlignment="Center" FontSize="12px" MouseDown="Label_MouseDown"/>
+            <Label Style="{StaticResource FloodItSizeLabel}" Content="Created by Lazar Stanojević" Cursor="Hand" HorizontalAlignment="Center" FontSize="12px" MouseDown="Author_MouseDown"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace FloodIt.Logic.Gameplay
 {
-    public class ComputerFloodRace : IGameplay // TODO https://i.imgur.com/bmbCzJG.png
+    public class ComputerFloodRace : IGameplay
     {
 
         private Tuple<int, int> playerStart;
@@ -18,10 +18,14 @@ namespace FloodIt.Logic.Gameplay
 
         private int gridSize;
 
-        public ComputerFloodRace(Game game) : base("Computer Flood Race", game)
+        public ComputerFloodRace() : base("Computer Flood Race") { }
+
+        public override void OnGameInit(Game game)
         {
 
-            gridSize = game.GameGrid.GridSize;
+            SetGameInstance(game);
+
+            gridSize = game.GameGrid.GridDimension;
 
             playerStart = new Tuple<int, int>(0, 0);
             cpuStart = new Tuple<int, int>(gridSize - 1, gridSize - 1);
@@ -36,7 +40,7 @@ namespace FloodIt.Logic.Gameplay
 
             cpuTiles = 1 + game.GameGrid.FloodFill(cpuStart, cpuOrigin.TileColor, TileOwner.Computer);
 
-            UpdateScoreboard();
+            OnScoreboardChanged();
             game.Painter.Repaint();
 
         }
@@ -44,14 +48,9 @@ namespace FloodIt.Logic.Gameplay
         public override void OnColorSelect(Color color)
         {
 
-            if (!running || game.GameGrid[0, 0].TileColor == color)
-            {
-                return;
-            }
-
             if (color == game.GameGrid[gridSize - 1, gridSize - 1].TileColor)
             {
-                game.Screen.DisplayMessage("Cannot select the same color as Computer!", View.GameScreen.MessageType.INFO);
+                game.Screen.DisplayMessage("Cannot select the same color as the Computer!", View.GameScreen.MessageType.HINT);
                 return;
             }
 
@@ -78,34 +77,39 @@ namespace FloodIt.Logic.Gameplay
             
 
             game.Painter.Repaint();
-            UpdateScoreboard();
+            OnScoreboardChanged();
 
             if (HasEnded())
             {
+                OnGameEnded();
+            }
 
-                if (playerTiles > cpuTiles)
-                {
-                    game.Screen.DisplayMessage("You have won!", View.GameScreen.MessageType.SUCCESS);
-                } else if (playerTiles < cpuTiles)
-                {
-                    game.Screen.DisplayMessage("You have lost!", View.GameScreen.MessageType.ERROR);
-                } else
-                {
-                    game.Screen.DisplayMessage("It's a tie!", View.GameScreen.MessageType.INFO);
-                }
-                
-                running = false;
+        }
 
+        public override void OnGameEnded()
+        {
+
+            if (playerTiles > cpuTiles)
+            {
+                game.Screen.DisplayMessage("You have won!", View.GameScreen.MessageType.SUCCESS, true);
+            }
+            else if (playerTiles < cpuTiles)
+            {
+                game.Screen.DisplayMessage("You have lost!", View.GameScreen.MessageType.INFO, true);
+            }
+            else
+            {
+                game.Screen.DisplayMessage("The game is a tie!", View.GameScreen.MessageType.INFO, true);
             }
 
         }
 
         public override bool HasEnded()
         {
-            return playerTiles + cpuTiles == Math.Pow(game.GameGrid.GridSize, 2);
+            return playerTiles + cpuTiles == Math.Pow(game.GameGrid.GridDimension, 2);
         }
 
-        public override void UpdateScoreboard()
+        public override void OnScoreboardChanged()
         {
             Scoreboard = "Player - " + playerTiles + " | " + cpuTiles + " - Computer";
         }
@@ -120,9 +124,9 @@ namespace FloodIt.Logic.Gameplay
 
                 HashSet<int> uniqueTiles = new HashSet<int>();
 
-                for (var i = 0; i < game.GameGrid.GridSize; i++)
+                for (var i = 0; i < game.GameGrid.GridDimension; i++)
                 {
-                    for (var j = 0; j < game.GameGrid.GridSize; j++)
+                    for (var j = 0; j < game.GameGrid.GridDimension; j++)
                     {
                         Tile tile = game.GameGrid[i, j];
                         if (tile.TileColor == color && tile.Owner == TileOwner.None && HasCpuTileNeighbor(i, j))

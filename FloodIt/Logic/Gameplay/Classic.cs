@@ -17,13 +17,17 @@ namespace FloodIt.Logic.Gameplay
 
         private Tuple<int, int> floodStart;
 
-        public Classic(Game game) : base("Classic", game)
+        public Classic() : base("Classic") { }
+
+        public override void OnGameInit(Game game)
         {
+
+            SetGameInstance(game);
 
             floodStart = new Tuple<int, int>(0, 0);
             steps = 0;
 
-            maxSteps = (int)Math.Floor((double)(25 * ((game.GameGrid.GridSize * 2) * 6) / ((14 + 14) * 6))); // TODO Ceil?
+            maxSteps = (int)Math.Ceiling((double)(25 * ((game.GameGrid.GridDimension * 2) * 6) / ((14 + 14) * 6)));
 
             Tile origin = game.GameGrid[0, 0];
             origin.Owner = TileOwner.Player1;
@@ -31,44 +35,48 @@ namespace FloodIt.Logic.Gameplay
             tiles = 1 + game.GameGrid.FloodFill(floodStart, origin.TileColor, TileOwner.Player1);
             game.Painter.Repaint();
 
-            UpdateScoreboard();
+            OnScoreboardChanged();
 
         }
 
         public override void OnColorSelect(Color color)
         {
 
-            if (!running || game.GameGrid[0, 0].TileColor == color)
+            if (game.GameGrid[0, 0].TileColor == color)
             {
-                return;
+                game.Screen.DisplayMessage("Your tiles are already flooded with that color", View.GameScreen.MessageType.HINT);
             }
 
             tiles += game.GameGrid.FloodFill(floodStart, color, TileOwner.Player1);
             game.Painter.Repaint();
 
             ++steps;
-            UpdateScoreboard();
+            OnScoreboardChanged();
 
-            if (running && steps > maxSteps)
+            if (HasEnded())
             {
-                game.Screen.DisplayMessage("You failed to flood the board in " + maxSteps + " steps", View.GameScreen.MessageType.SUCCESS);
-                running = false;
+                OnGameEnded();
             }
 
-            if (running && HasEnded())
-            {
-                game.Screen.DisplayMessage("You did it in " + steps + " steps!", View.GameScreen.MessageType.SUCCESS);
-                running = false;
-            }
+        }
 
+        public override void OnGameEnded()
+        {
+            if (steps > maxSteps)
+            {
+                game.Screen.DisplayMessage("You failed to flood the board in " + maxSteps + " steps", View.GameScreen.MessageType.INFO, true);
+            } else
+            {
+                game.Screen.DisplayMessage("You did it in " + steps + " steps!", View.GameScreen.MessageType.SUCCESS, true);
+            }
         }
 
         public override bool HasEnded()
         {
-            return tiles == Math.Pow(game.GameGrid.GridSize, 2);
+            return tiles == Math.Pow(game.GameGrid.GridDimension, 2) || steps > maxSteps;
         }
 
-        public override void UpdateScoreboard()
+        public override void OnScoreboardChanged()
         {
             Scoreboard = steps + " / " + maxSteps;
         }

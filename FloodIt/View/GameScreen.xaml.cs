@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static FloodIt.Logic.Gameplay.IGameplay;
+using static FloodIt.Logic.Grid;
 
 namespace FloodIt.View
 {
@@ -29,23 +30,16 @@ namespace FloodIt.View
 
         public Game GameInstance { get; private set; }
 
-        public GameScreen(MainWindow mainWindow, int id/* TODO !! */)
+        public GameScreen(MainWindow mainWindow, IGameplay gameplay)
         {
 
             InitializeComponent();
-
             DataContext = this;
 
             this.mainWindow = mainWindow;
 
-            if (id == 1) // TODO!
-                GameInstance = new Game(this, GameType.Singleplayer, Logic.Grid.GridType.LARGE);
-            else if (id == 2)
-                GameInstance = new Game(this, GameType.FloodRace, Logic.Grid.GridType.MEDIUM);
-            else if (id == 3)
-                GameInstance = new Game(this, GameType.FloodRaceCPU, Logic.Grid.GridType.SMALL);
-            else if (id == 4)
-                GameInstance = new Game(this, GameType.FloodRace2P, Logic.Grid.GridType.SMALL);
+            GameInstance = new Game(this, gameplay, mainWindow.Size);
+
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -67,7 +61,7 @@ namespace FloodIt.View
             }
         }
 
-        public enum MessageType { ERROR, SUCCESS, INFO }
+        public enum MessageType { HINT, SUCCESS, INFO }
 
     }
 

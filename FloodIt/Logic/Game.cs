@@ -21,29 +21,16 @@ namespace FloodIt.Logic
         public Painting Painter { get; private set; }
         public GameScreen Screen { get; private set; }
 
-        public Game(GameScreen gameScreen, GameType gameType, GridType gridType)
+        public Game(GameScreen gameScreen, IGameplay gameplay, GridSize gridType)
         {
 
+            Gameplay = gameplay;
             Screen = gameScreen;
 
             GameGrid = new Grid(gridType);
             Painter = new Painting(this, gridType);
 
-            switch (gameType) // TODO
-            {
-                case GameType.Singleplayer:
-                    Gameplay = new Casual(this);
-                    break;
-                case GameType.FloodRaceCPU:
-                    Gameplay = new ComputerFloodRace(this);
-                    break;
-                case GameType.FloodRace:
-                    Gameplay = new Classic(this);
-                    break;
-                case GameType.FloodRace2P:
-                    Gameplay = new TwoPlayerFloodRace(this);
-                    break;
-            }
+            gameplay.OnGameInit(this);
 
         }
 

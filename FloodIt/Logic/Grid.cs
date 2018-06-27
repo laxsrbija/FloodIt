@@ -10,24 +10,24 @@ namespace FloodIt.Logic
     public class Grid
     {
 
-        public int GridSize { get; private set; }
+        public int GridDimension { get; private set; }
 
         private List<List<Tile>> grid;
 
-        public Grid(GridType gridType)
+        public Grid(GridSize gridType)
         {
             Random random = new Random(Guid.NewGuid().GetHashCode());
 
             DetermineGridSize(gridType);
 
             grid = new List<List<Tile>>();
-            for (var i = 0; i < GridSize; i++)
+            for (var i = 0; i < GridDimension; i++)
             {
                 grid.Add(new List<Tile>());
 
-                for (var j = 0; j < GridSize; j++)
+                for (var j = 0; j < GridDimension; j++)
                 {
-                    int id = (i * GridSize) + j;
+                    int id = (i * GridDimension) + j;
                     Color color = Tile.colors[random.Next(Tile.colors.Count)];
                     grid[i].Add(new Tile(id, color));
                 }
@@ -75,8 +75,8 @@ namespace FloodIt.Logic
                     tile.Owner = owner;
                     tile.TileColor = newColor;
 
-                    int i = tile.Id / GridSize;
-                    int j = tile.Id % GridSize;
+                    int i = tile.Id / GridDimension;
+                    int j = tile.Id % GridDimension;
 
                     TestAndPush(tiles, i + 1, j, visitedTiles);
                     TestAndPush(tiles, i - 1, j, visitedTiles);
@@ -100,20 +100,20 @@ namespace FloodIt.Logic
             }
         }
 
-        public enum GridType { SMALL, MEDIUM, LARGE }
+        public enum GridSize { SMALL, MEDIUM, LARGE }
 
-        private void DetermineGridSize(GridType gridType)
+        private void DetermineGridSize(GridSize gridType)
         {
             switch (gridType)
             {
-                case GridType.SMALL:
-                    GridSize = 12;
+                case GridSize.SMALL:
+                    GridDimension = 12;
                     break;
-                case GridType.MEDIUM:
-                    GridSize = 18;
+                case GridSize.MEDIUM:
+                    GridDimension = 18;
                     break;
-                case GridType.LARGE:
-                    GridSize = 24;
+                case GridSize.LARGE:
+                    GridDimension = 24;
                     break;
             }
         }

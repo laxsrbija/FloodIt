@@ -12,15 +12,17 @@ namespace FloodIt.Logic.Gameplay
     {
         
         protected Game game;
-        protected bool running;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public IGameplay(string gameType, Game game) 
+        public IGameplay(string gameType) 
         {
-            this.running = true;
-            this.game = game;
             Gametype = gameType;
+        }
+
+        public void SetGameInstance(Game game)
+        {
+            this.game = game; 
         }
 
         private string scoreboard;
@@ -41,13 +43,15 @@ namespace FloodIt.Logic.Gameplay
             }
         }
 
+        abstract public void OnGameInit(Game game);
+
         abstract public void OnColorSelect(Color color);
 
-        abstract public void UpdateScoreboard();
+        abstract public void OnGameEnded();
+
+        abstract public void OnScoreboardChanged();
 
         abstract public bool HasEnded();
-
-        public enum GameType { Singleplayer, FloodRace, FloodRaceCPU, FloodRace2P} // TODO eliminisati ovaj deo
 
     }
 }

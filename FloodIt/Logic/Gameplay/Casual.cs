@@ -15,8 +15,13 @@ namespace FloodIt.Logic.Gameplay
         private int steps;
         private int tilesAcquired;
 
-        public Casual(Game game) : base("Casual", game) {
-            
+        public Casual() : base("Casual") { }
+
+        public override void OnGameInit(Game game)
+        {
+
+            SetGameInstance(game);
+
             floodStart = new Tuple<int, int>(0, 0);
             steps = 0;
 
@@ -26,38 +31,42 @@ namespace FloodIt.Logic.Gameplay
             tilesAcquired = 1 + game.GameGrid.FloodFill(floodStart, origin.TileColor, TileOwner.Player1);
             game.Painter.Repaint();
 
-            UpdateScoreboard();
+            OnScoreboardChanged();
 
         }
 
         public override void OnColorSelect(Color color)
         {
 
-            if (!running || game.GameGrid[0, 0].TileColor == color)
+            if (game.GameGrid[0, 0].TileColor == color)
             {
-                return;
+                game.Screen.DisplayMessage("Your tiles are already flooded with that color", View.GameScreen.MessageType.HINT);
             }
 
             tilesAcquired += game.GameGrid.FloodFill(floodStart, color, TileOwner.Player1);
             game.Painter.Repaint();
 
             ++steps;
-            UpdateScoreboard();
+            OnScoreboardChanged();
 
             if (HasEnded())
             {
-                game.Screen.DisplayMessage("You did it in " + steps + " steps!", View.GameScreen.MessageType.SUCCESS);
-                running = false;
+                OnGameEnded();
             }
 
         }
 
-        public override bool HasEnded()
+        public override void OnGameEnded()
         {
-            return tilesAcquired == Math.Pow(game.GameGrid.GridSize, 2);
+            game.Screen.DisplayMessage("You did it in " + steps + " steps!", View.GameScreen.MessageType.SUCCESS, true);
         }
 
-        public override void UpdateScoreboard()
+        public override bool HasEnded()
+        {
+            return tilesAcquired == Math.Pow(game.GameGrid.GridDimension, 2);
+        }
+
+        public override void OnScoreboardChanged()
         {
             Scoreboard = "Steps: " + steps;
         }

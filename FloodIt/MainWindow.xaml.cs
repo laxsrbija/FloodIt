@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static FloodIt.Logic.Grid;
 
 namespace FloodIt
 {
@@ -24,7 +25,9 @@ namespace FloodIt
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
+        public GridSize Size { get; set; }
+
         private Page window;
         public Page Window {
             get => window;
@@ -40,6 +43,7 @@ namespace FloodIt
             InitializeComponent();
             DataContext = this;
 
+            Size = GridSize.SMALL;
             Window = new MainMenu(this);
 
         }

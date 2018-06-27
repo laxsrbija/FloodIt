@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FloodIt"
         mc:Ignorable="d"
-        Title="FloodIt!" Height="644" Width="448" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+        Title="FloodIt!" Height="576" Width="448" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="Resources/icon.ico">
     <Grid>
         <Frame Content="{Binding Window}" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
     </Grid>

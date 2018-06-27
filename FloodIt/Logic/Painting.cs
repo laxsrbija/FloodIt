@@ -18,7 +18,7 @@ namespace FloodIt.Logic
         private Canvas canvas;
         private int tileSize;
 
-        public Painting(Game game, GridType gridType)
+        public Painting(Game game, GridSize gridType)
         {
             this.grid = game.GameGrid;
             this.canvas = game.Screen.GameCanvas;
@@ -31,9 +31,9 @@ namespace FloodIt.Logic
 
             canvas.Children.Clear();
             
-            for (var i = 0; i < grid.GridSize; i++)
+            for (var i = 0; i < grid.GridDimension; i++)
             {
-                for (var j = 0; j < grid.GridSize; j++)
+                for (var j = 0; j < grid.GridDimension; j++)
                 {
 
                     Rectangle rect = new Rectangle();
@@ -58,15 +58,15 @@ namespace FloodIt.Logic
             return new Tuple<int, int>(x, y);
         }
 
-        private int DetermineTileSize(GridType gridType)
+        private int DetermineTileSize(GridSize gridType)
         {
             switch (gridType)
             {
-                case GridType.SMALL:
+                case GridSize.SMALL:
                     return 36;
-                case GridType.MEDIUM:
+                case GridSize.MEDIUM:
                     return 24;
-                case GridType.LARGE:
+                case GridSize.LARGE:
                     return 18;
             }
             return -1;
