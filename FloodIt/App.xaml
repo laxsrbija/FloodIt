@@ -4,6 +4,62 @@
              xmlns:local="clr-namespace:FloodIt"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <Style x:Key="FloodItGridBackground" TargetType="Grid">
+            <Setter Property="Background" Value="#1D3557"/>
+        </Style>
+
+        <Style x:Key="FloodItTextBlock" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#F1FAEE"/>
+            <Setter Property="FontFamily" Value="pack://application:,,,/Resources/#Gotham"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="18px"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
+        <Style x:Key="FloodItSizeLabel" TargetType="Label">
+            <Setter Property="Foreground" Value="#F1FAEE"/>
+            <Setter Property="FontFamily" Value="pack://application:,,,/Resources/#Gotham"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="18px"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
+        <Style x:Key="FloodItGameTextBlock" TargetType="TextBlock" BasedOn="{StaticResource FloodItTextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+        </Style>
+
+        <Style x:Key="FloodItButton" TargetType="Button">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontFamily" Value="pack://application:,,,/Resources/#Gotham"/>
+            <Setter Property="FontSize" Value="16px"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#F1FAEE"/>
+            <Setter Property="Background" Value="#457B9D"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding Background}" BorderThickness="0" >
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FloodItMainButton" TargetType="Button" BasedOn="{StaticResource FloodItButton}">
+            <Setter Property="Margin" Value="0, 15, 0, 0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Width" Value="350"/>
+            <Setter Property="Height" Value="40"/>
+        </Style>
+
     </Application.Resources>
 </Application>

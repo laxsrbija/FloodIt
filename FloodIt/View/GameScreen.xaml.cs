@@ -58,11 +58,13 @@ namespace FloodIt.View
             mainWindow.Window = new MainMenu(mainWindow);
         }
 
-        public bool DisplayMessage(string message, MessageType type)
+        public void DisplayMessage(string message, MessageType type, bool hasEnded = false)
         {
-            // TODO odgovor prozora yes ili no
-            MessageBox.Show(type + ": " + message);
-            return true;
+            new MessageDialog(message, type).ShowDialog();
+            if (hasEnded)
+            {
+                mainWindow.Window = new MainMenu(mainWindow);
+            }
         }
 
         public enum MessageType { ERROR, SUCCESS, INFO }

@@ -5,14 +5,23 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FloodIt.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="650" d:DesignWidth="432"
       Title="MainMenu">
 
-    <Grid>
-        <Button Content="Classic" HorizontalAlignment="Left" Margin="182,230,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <Button Content="VS Computer" HorizontalAlignment="Left" Margin="354,250,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-        <Button Content="Flood Race" HorizontalAlignment="Left" Margin="212,323,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
-        <Button Content="2 players" HorizontalAlignment="Left" Margin="406,323,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
-
+    <Grid Style="{StaticResource FloodItGridBackground}">
+        <StackPanel>
+            <Image HorizontalAlignment="Center" Margin="0, 100, 0, 60" Height="55" VerticalAlignment="Top" Width="320" Source="/FloodIt;component/Resources/logo.png"/>
+            <Button Style="{StaticResource FloodItMainButton}" Content="Casual" Click="Button_Click"/>
+            <Button Style="{StaticResource FloodItMainButton}" Content="Classic" Click="Button_Click_1"/>
+            <Button Style="{StaticResource FloodItMainButton}" Content="Computer Flood Race" Click="Button_Click_2"/>
+            <Button Style="{StaticResource FloodItMainButton}" Content="Two Player Flood Race" Click="Button_Click_3"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 25, 0, 20">
+                <Label Style="{StaticResource FloodItSizeLabel}" Content="Game size:"/>
+                <Label Style="{StaticResource FloodItSizeLabel}" Content="Small" Foreground="#E63946" Cursor="Hand"/>
+                <Label Style="{StaticResource FloodItSizeLabel}" Content="Medium" Foreground="#E63946" Cursor="Hand"/>
+                <Label Style="{StaticResource FloodItSizeLabel}" Content="Large" Cursor="Hand"/>
+            </StackPanel>
+            <Label Style="{StaticResource FloodItSizeLabel}" Content="Created by Lazar Stanojević" Cursor="Hand" HorizontalAlignment="Center" FontSize="12px" MouseDown="Label_MouseDown"/>
+        </StackPanel>
     </Grid>
 </Page>

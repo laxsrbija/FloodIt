@@ -21,7 +21,7 @@ namespace FloodIt.View
     public partial class MainMenu : Page
     {
 
-        private MainWindow mainWindow;
+        private MainWindow mainWindow; // TODO Preimenovati dogadjaje
 
         public MainMenu(MainWindow mainWindow)
         {
@@ -47,6 +47,11 @@ namespace FloodIt.View
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             mainWindow.Window = new GameScreen(mainWindow, 4);
+        }
+
+        private void Label_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/laxsrbija");
         }
     }
 }
