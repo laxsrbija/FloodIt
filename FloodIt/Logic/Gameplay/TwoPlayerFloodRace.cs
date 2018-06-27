@@ -19,11 +19,15 @@ namespace FloodIt.Logic.Gameplay
 
         private int turn;
 
+        private int gridSize;
+
         public TwoPlayerFloodRace(Game game) : base("Two Player Flood Race", game)
         {
 
+            gridSize = game.GameGrid.GridSize;
+
             p1Start = new Tuple<int, int>(0, 0);
-            p2Start = new Tuple<int, int>(13, 13);
+            p2Start = new Tuple<int, int>(gridSize - 1, gridSize - 1);
 
             turn = 1;
 
@@ -31,7 +35,7 @@ namespace FloodIt.Logic.Gameplay
             p1Origin.Owner = TileOwner.Player1;
             p1Tiles = 1 + game.GameGrid.FloodFill(p1Start, p1Origin.TileColor, TileOwner.Player1);
 
-            Tile p2Origin = game.GameGrid[13, 13];
+            Tile p2Origin = game.GameGrid[gridSize - 1, gridSize - 1];
             p2Origin.Owner = TileOwner.Player2;
             p2Tiles = 1 + game.GameGrid.FloodFill(p2Start, p2Origin.TileColor, TileOwner.Player2);
 
@@ -43,7 +47,7 @@ namespace FloodIt.Logic.Gameplay
         public override void OnColorSelect(Color color)
         {
 
-            if (!running || game.GameGrid[0, 0].TileColor == color || game.GameGrid[13, 13].TileColor == color) // TODO izbaciti upozorenje
+            if (!running || game.GameGrid[0, 0].TileColor == color || game.GameGrid[gridSize - 1, gridSize - 1].TileColor == color) // TODO izbaciti upozorenje
             {
                 return;
             }
