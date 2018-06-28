@@ -47,7 +47,7 @@ namespace FloodIt.View
             GameInstance.HandleClick(e.GetPosition(GameCanvas));
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Logo_Click(object sender, RoutedEventArgs e)
         {
             mainWindow.Window = new MainMenu(mainWindow);
         }

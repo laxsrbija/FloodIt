@@ -27,7 +27,7 @@ namespace FloodIt.Logic.Gameplay
             floodStart = new Tuple<int, int>(0, 0);
             steps = 0;
 
-            maxSteps = (int)Math.Ceiling((double)(25 * ((game.GameGrid.GridDimension * 2) * 6) / ((14 + 14) * 6)));
+            maxSteps = (int)Math.Ceiling((double)(25 * ((game.GameGrid.GridDimension * 2) * 6) / ((14 + 14) * 6))) + 2;
 
             Tile origin = game.GameGrid[0, 0];
             origin.Owner = TileOwner.Player1;
@@ -62,7 +62,7 @@ namespace FloodIt.Logic.Gameplay
 
         public override void OnGameEnded()
         {
-            if (steps > maxSteps)
+            if (steps >= maxSteps)
             {
                 game.Screen.DisplayMessage("You failed to flood the board in " + maxSteps + " steps", View.GameScreen.MessageType.INFO, true);
             } else

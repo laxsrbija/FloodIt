@@ -10,7 +10,7 @@
 
     <Grid Style="{StaticResource FloodItGridBackground}">
         <StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" MouseDown="Button_Click" Cursor="Hand" Margin="0, 20, 0, 10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" MouseDown="Logo_Click" Cursor="Hand" Margin="0, 20, 0, 10">
                 <Image Height="30" Width="170" Margin="0" Source="/FloodIt;component/Resources/logo.png"/>
                 <TextBlock Style="{StaticResource FloodItGameTextBlock}" Width="Auto" Margin="0, 4, 0, 0" Text="{Binding GameInstance.Gameplay.Gametype}" FontFamily="pack://application:,,,/Resources/#GothamCondensed" FontSize="20px"/>
             </StackPanel>

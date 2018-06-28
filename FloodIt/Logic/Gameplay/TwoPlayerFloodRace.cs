@@ -56,6 +56,7 @@ namespace FloodIt.Logic.Gameplay
                 if (game.GameGrid[gridSize - 1, gridSize - 1].TileColor == color)
                 {
                     game.Screen.DisplayMessage("Can't select the same color as the other player", View.GameScreen.MessageType.HINT);
+                    return;
                 } else {
                     p1Tiles += game.GameGrid.FloodFill(p1Start, color, TileOwner.Player1);
                 }
@@ -64,6 +65,7 @@ namespace FloodIt.Logic.Gameplay
                 if (game.GameGrid[0, 0].TileColor == color)
                 {
                     game.Screen.DisplayMessage("Can't select the same color as the other player", View.GameScreen.MessageType.HINT);
+                    return;
                 } else
                 {
                     p2Tiles += game.GameGrid.FloodFill(p2Start, color, TileOwner.Player2);
@@ -73,10 +75,10 @@ namespace FloodIt.Logic.Gameplay
             turn = -turn;
 
             game.Painter.Repaint();
-            OnScoreboardChanged();
 
             if (HasEnded())
             {
+                OnScoreboardChanged();
                 OnGameEnded();
             }
 
@@ -102,7 +104,24 @@ namespace FloodIt.Logic.Gameplay
 
         public override bool HasEnded()
         {
-            return p1Tiles + p2Tiles == Math.Pow(game.GameGrid.GridDimension, 2);
+            if (p1Tiles + p2Tiles == Math.Pow(game.GameGrid.GridDimension, 2))
+            {
+                return true;
+            }
+
+            if (PlayerStuck(TileOwner.Player1))
+            {
+                p1Tiles += (int)Math.Pow(game.GameGrid.GridDimension, 2) - (p1Tiles + p2Tiles);
+                return true;
+            }
+
+            if (PlayerStuck(TileOwner.Player2))
+            {
+                p2Tiles += (int)Math.Pow(game.GameGrid.GridDimension, 2) - (p1Tiles + p2Tiles);
+                return true;
+            }
+
+            return false;
         }
 
         public override void OnScoreboardChanged()
@@ -114,6 +133,62 @@ namespace FloodIt.Logic.Gameplay
             {
                 Scoreboard = "  First Player - " + p1Tiles + " | " + p2Tiles + " - Second player <";
             }
+        }
+
+        private bool PlayerStuck(TileOwner owner)
+        {
+
+            var startColor = game.GameGrid[p1Start.Item1, p1Start.Item2].TileColor;
+            var oponentColor = game.GameGrid[p2Start.Item1, p2Start.Item2].TileColor;
+            if (owner == TileOwner.Player2)
+            {
+                oponentColor = game.GameGrid[p1Start.Item1, p1Start.Item2].TileColor;
+                startColor = game.GameGrid[p2Start.Item1, p2Start.Item2].TileColor;
+            }
+
+
+            for (var i = 0; i < game.GameGrid.GridDimension; i++)
+            {
+                for (var j = 0; j < game.GameGrid.GridDimension; j++)
+                {
+                    Tile tile = game.GameGrid[i, j];
+                    if ((tile.TileColor != startColor && tile.TileColor != oponentColor)
+                        || (tile.Owner == TileOwner.None && HasSameOwnerTileNeighbor(owner, i, j)))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+
+        }
+
+        private bool HasSameOwnerTileNeighbor(TileOwner owner, int i, int j)
+        {
+
+            if (game.GameGrid[i - 1, j] != null && game.GameGrid[i - 1, j].Owner == owner)
+            {
+                return true;
+            }
+
+            if (game.GameGrid[i + 1, j] != null && game.GameGrid[i + 1, j].Owner == owner)
+            {
+                return true;
+            }
+
+            if (game.GameGrid[i, j + 1] != null && game.GameGrid[i, j + 1].Owner == owner)
+            {
+                return true;
+            }
+
+            if (game.GameGrid[i, j - 1] != null && game.GameGrid[i, j - 1].Owner == owner)
+            {
+                return true;
+            }
+
+            return false;
+
         }
 
     }

@@ -56,7 +56,6 @@ namespace FloodIt.Logic.Gameplay
 
             playerTiles += game.GameGrid.FloodFill(playerStart, color, TileOwner.Player1);
 
-
             var tiles = AquisitionsByColor();
 
             Console.WriteLine("Computer options:");
@@ -81,6 +80,7 @@ namespace FloodIt.Logic.Gameplay
 
             if (HasEnded())
             {
+                OnScoreboardChanged();
                 OnGameEnded();
             }
 
@@ -106,7 +106,24 @@ namespace FloodIt.Logic.Gameplay
 
         public override bool HasEnded()
         {
-            return playerTiles + cpuTiles == Math.Pow(game.GameGrid.GridDimension, 2);
+            if (playerTiles + cpuTiles == Math.Pow(game.GameGrid.GridDimension, 2))
+            {
+                return true;
+            }
+
+            if (PlayerStuck(TileOwner.Player1))
+            {
+                cpuTiles += (int)Math.Pow(game.GameGrid.GridDimension, 2) - (cpuTiles + playerTiles);
+                return true;
+            }
+
+            if (PlayerStuck(TileOwner.Computer))
+            {
+                playerTiles += (int)Math.Pow(game.GameGrid.GridDimension, 2) - (cpuTiles + playerTiles);
+                return true;
+            }
+
+            return false;
         }
 
         public override void OnScoreboardChanged()
@@ -129,7 +146,7 @@ namespace FloodIt.Logic.Gameplay
                     for (var j = 0; j < game.GameGrid.GridDimension; j++)
                     {
                         Tile tile = game.GameGrid[i, j];
-                        if (tile.TileColor == color && tile.Owner == TileOwner.None && HasCpuTileNeighbor(i, j))
+                        if (tile.TileColor == color && tile.Owner == TileOwner.None && HasSameOwnerTileNeighbor(TileOwner.Computer, i, j))
                         {
                             uniqueTiles.Add(tile.Id);
                         }
@@ -144,30 +161,59 @@ namespace FloodIt.Logic.Gameplay
 
         }
 
-        private bool HasCpuTileNeighbor(int i, int j)
+        private bool HasSameOwnerTileNeighbor(TileOwner owner, int i, int j)
         {
 
-            if (game.GameGrid[i - 1, j] != null && game.GameGrid[i - 1, j].Owner == TileOwner.Computer)
+            if (game.GameGrid[i - 1, j] != null && game.GameGrid[i - 1, j].Owner == owner)
             {
                 return true;
             }
 
-            if (game.GameGrid[i + 1, j] != null && game.GameGrid[i + 1, j].Owner == TileOwner.Computer)
+            if (game.GameGrid[i + 1, j] != null && game.GameGrid[i + 1, j].Owner == owner)
             {
                 return true;
             }
 
-            if (game.GameGrid[i, j + 1] != null && game.GameGrid[i, j + 1].Owner == TileOwner.Computer)
+            if (game.GameGrid[i, j + 1] != null && game.GameGrid[i, j + 1].Owner == owner)
             {
                 return true;
             }
 
-            if (game.GameGrid[i, j - 1] != null && game.GameGrid[i, j - 1].Owner == TileOwner.Computer)
+            if (game.GameGrid[i, j - 1] != null && game.GameGrid[i, j - 1].Owner == owner)
             {
                 return true;
             }
 
             return false;
+
+        }
+
+        private bool PlayerStuck(TileOwner owner)
+        {
+
+            var startColor = game.GameGrid[playerStart.Item1, playerStart.Item2].TileColor;
+            var oponentColor = game.GameGrid[cpuStart.Item1, cpuStart.Item2].TileColor;
+            if (owner == TileOwner.Computer)
+            {
+                oponentColor = game.GameGrid[playerStart.Item1, playerStart.Item2].TileColor;
+                startColor = game.GameGrid[cpuStart.Item1, cpuStart.Item2].TileColor;
+            }
+
+
+            for (var i = 0; i < game.GameGrid.GridDimension; i++)
+            {
+                for (var j = 0; j < game.GameGrid.GridDimension; j++)
+                {
+                    Tile tile = game.GameGrid[i, j];
+                    if ((tile.TileColor != startColor && tile.TileColor != oponentColor) 
+                        || (tile.Owner == TileOwner.None && HasSameOwnerTileNeighbor(owner, i, j)))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
 
         }
 

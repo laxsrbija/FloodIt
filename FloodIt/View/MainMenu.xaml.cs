@@ -55,7 +55,7 @@ namespace FloodIt.View
 
         private void Author_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/laxsrbija");
+            System.Diagnostics.Process.Start("https://github.com/laxsrbija/FloodIt");
         }
 
         private void SetAndMarkGridSize(GridSize size)
