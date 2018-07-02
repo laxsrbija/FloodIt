@@ -75,6 +75,7 @@ namespace FloodIt.Logic.Gameplay
             turn = -turn;
 
             game.Painter.Repaint();
+            OnScoreboardChanged();
 
             if (HasEnded())
             {

@@ -135,26 +135,35 @@ namespace FloodIt.Logic.Gameplay
         {
 
             List<Tuple<int, Color>> ret = new List<Tuple<int, Color>>();
+            Dictionary<Color, int> dict = new Dictionary<Color, int>();
+            HashSet<int> uniqueTiles = new HashSet<int>();
 
-            foreach (var color in Tile.colors)
+            for (var i = 0; i < game.GameGrid.GridDimension; i++)
             {
-
-                HashSet<int> uniqueTiles = new HashSet<int>();
-
-                for (var i = 0; i < game.GameGrid.GridDimension; i++)
+                for (var j = 0; j < game.GameGrid.GridDimension; j++)
                 {
-                    for (var j = 0; j < game.GameGrid.GridDimension; j++)
+                    Tile tile = game.GameGrid[i, j];
+                    if (!uniqueTiles.Contains(tile.Id) 
+                        && tile.Owner == TileOwner.None 
+                        && HasSameOwnerTileNeighbor(TileOwner.Computer, i, j))
                     {
-                        Tile tile = game.GameGrid[i, j];
-                        if (tile.TileColor == color && tile.Owner == TileOwner.None && HasSameOwnerTileNeighbor(TileOwner.Computer, i, j))
+
+                        uniqueTiles.Add(tile.Id);
+
+                        if (!dict.ContainsKey(tile.TileColor))
                         {
-                            uniqueTiles.Add(tile.Id);
+                            dict[tile.TileColor] = 0;
                         }
+
+                        ++dict[tile.TileColor];
+
                     }
                 }
+            }
 
-                ret.Add(new Tuple<int, Color>(uniqueTiles.Count, color));
-
+            foreach (var color in dict.Keys)
+            {
+                ret.Add(new Tuple<int, Color>(dict[color], color));
             }
 
             return ret.OrderByDescending(o => o.Item1).ToList();
